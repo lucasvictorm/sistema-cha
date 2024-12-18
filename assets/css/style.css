@@ -1,0 +1,10 @@
+main{
+    padding: 20px;
+}
+
+#ausentes-presentes-div{
+    
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}

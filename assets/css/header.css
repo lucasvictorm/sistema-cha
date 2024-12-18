@@ -1,0 +1,16 @@
+header{
+   box-shadow: 0px -2px 12px 0px black;
+   padding: 10px 0;
+
+    & #header-menu{
+        display: flex;
+        gap: 20px;
+    }
+
+    svg {
+        width: 40px;
+        height: 40px;
+      }
+    
+}
+

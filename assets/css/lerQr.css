@@ -1,0 +1,9 @@
+#reader{
+    width: 500px;
+    margin: auto;
+}
+
+#reader #html5-qrcode-button-camera-stop{
+    display: none !important;
+}
+
