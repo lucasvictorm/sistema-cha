@@ -31,10 +31,6 @@
 </main>
     <script src="../src/js/qrcode.js"></script>
     <script>
-
-        
-
-
         document.getElementById('cadastro').addEventListener('submit', async (event) => {
             event.preventDefault();
 
@@ -55,16 +51,51 @@
                 const resultado = await response.json();
 
                 if(resultado.resposta){
-                    await new QRCode(document.getElementById("qrcode"), id);
+                    new QRCode(document.getElementById("qrcode"), {
+                        text: id,
+                        
+                        colorDark : "#000000",
+                        colorLight : "#ffffff",
+                        correctLevel : QRCode.CorrectLevel.H,
+                        padding: 20 
+                    });
                    
                     setTimeout(()=> {
+
                         document.getElementById('qr-div').style.display = 'block';
-                    let qr_div = document.getElementById('qrcode');
-                    let imagem_qr = qr_div.querySelector('img');
-                    let imagemSrc = imagem_qr.src;
-                    
-                    document.getElementById('btn-baixar-qr').href=imagemSrc
-                    document.getElementById('btn-baixar-qr').download=document.getElementById('nome').value+'.jpg'
+                        let qr_div = document.getElementById('qrcode');
+
+                        let canvas = qr_div.querySelector('canvas'); // Obtém o canvas do QR Code gerado
+
+                        // Define o tamanho do padding ao redor do QR Code
+                        let padding = 40; // O valor do padding (a área em branco ao redor)
+
+                        // Criar um novo canvas com o padding adicional
+                        let newCanvas = document.createElement('canvas');
+                        let context = newCanvas.getContext('2d');
+
+                        // Define a nova largura e altura, incluindo o padding
+                        newCanvas.width = canvas.width + padding * 2;
+                        newCanvas.height = canvas.height + padding * 2;
+
+                        // Preenche o novo canvas com a cor de fundo (branco)
+                        context.fillStyle = "#ffffff"; // Cor de fundo (branca)
+                        context.fillRect(0, 0, newCanvas.width, newCanvas.height);
+
+                        // Desenha o QR Code no centro do novo canvas
+                        context.drawImage(canvas, padding, padding);
+
+                        // Converte o novo canvas para uma URL de imagem (formato PNG ou JPEG)
+                        let imagemSrc = newCanvas.toDataURL("image/jpeg");
+
+                        // Configura o link de download para o QR Code com padding
+                        document.getElementById('btn-baixar-qr').href = imagemSrc;
+
+                        let imagem_qr = qr_div.querySelector('img');
+                        //let imagemSrc = imagem_qr.src;
+                        
+                        //document.getElementById('btn-baixar-qr').href=imagemSrc
+                        document.getElementById('btn-baixar-qr').download=document.getElementById('nome').value+'.jpg'
 
                     }, 500)
 

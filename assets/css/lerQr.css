@@ -1,5 +1,5 @@
 #reader{
-    width: 500px;
+    width: 300px;
     margin: auto;
 }
 
@@ -7,3 +7,11 @@
     display: none !important;
 }
 
+#div-informacoes{
+    text-align: center;
+    display: none;
+}
+
+#div-informacoes img{
+    width: 300px;
+}

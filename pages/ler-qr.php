@@ -1,14 +1,16 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<?php include '../includes/head.php'?>
+    <title>Ler Qr</title>
     <link rel="stylesheet" href="../assets/css/lerQr.css">
 </head>
 <body>
+
+    <?php include '../includes/header.php'?>
+
     <div id="reader" width="600px"></div>
-    
+    <div id="div-informacoes">
+        <img id="fotoImg" src="" alt="Foto">
+        <p id="nomeP"></p>
+    </div>
 </body>
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script>
@@ -16,22 +18,42 @@
     let qrLido = false;
     let html5QrcodeScanner = new Html5QrcodeScanner(
         "reader",
-        { fps: 10, qrbox: {width: 400, height: 400} },
+        { fps: 10, qrbox: {width: 500, height: 500} },
         /* verbose= */ false);
 
-    function onScanSuccess(decodedText, decodedResult) {
-        // handle the scanned code as you like, for example:
+    async function onScanSuccess(decodedText, decodedResult) {
+        
             if(!qrLido){
-                console.log(`Code matched = ${decodedText}`, decodedResult);
                 qrLido = true;
+                let nomeP = document.getElementById('nomeP')
+                let fotoImg = document.getElementById('fotoImg')
+
+                let form = new FormData();
+                form.append('id', decodedText)
+
+                try{
+                    let response = await fetch('../actions/buscaQr.php', {
+                        method: 'POST',
+                        body: form
+                    })
+                    dados = await response.json();
+                    console.log(dados.foto)
+                    nomeP.innerText = dados.nome
+                    fotoImg.src = `../${dados.foto}`
+                    document.getElementById('div-informacoes').style.display = 'block'
+                    setTimeout(()=>{qrLido = false}, 2000)
+
+                }catch(error){
+
+                }
+            
             }
        
         
     }
     
     function onScanFailure(error) {
-        // handle scan failure, usually better to ignore and keep scanning.
-        // for example:
+        
         
     }
     
